@@ -1,0 +1,3 @@
+[submodule "php"]
+	path = php
+	url = git://git.moodle.org/moodle.git

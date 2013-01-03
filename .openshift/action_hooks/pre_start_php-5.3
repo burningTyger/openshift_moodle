@@ -12,3 +12,16 @@
 # prevent your application from stopping cleanly or starting at all.
 # Application start and stop is subject to different timeouts
 # throughout the system.
+
+export OPENSHIFT_SECURE_TOKEN="$(ruby -e "
+  require 'securerandom'
+  if File.exist? ENV['OPENSHIFT_DATA_DIR']+'token'
+    token = File.open(ENV['OPENSHIFT_DATA_DIR']+'token').read
+  else
+    token = SecureRandom.base64(64)
+    File.open(ENV['OPENSHIFT_DATA_DIR']+'token', 'w') { |file| file.write(token) }
+  end
+  puts token
+  ")"
+
+cp ~/app-root/repo/config/config.php ~/app-root/repo/php/

@@ -1,10 +1,10 @@
 #Moodle for Openshift
-Moodle is a well known learning management system (lms) used by many schools and organisations around the world. If you need a personal install or a platfor for a small school this Openshift Quickstart might be the right thing for you. Openshift offers a 500MB instance for free which is more than enough if you just need something that works and you still have the options to scale your application if you have to. 
+Moodle is a well known learning management system (lms) used by many schools and organisations around the world. If you need a personal install or a platform for a small school this Openshift Quickstart might be the right thing for you. Openshift offers a 500MB instance for free which is more than enough if you just need something that works and you still have the options to scale your application if you have to. 
 
 If you're ready to start follow this manual. 
 
 ##Current Moodle Version
-To see which version of Moodle you're getting with master see the VERSION file.
+To see which version of Moodle you're getting with master see the [VERSION](https://github.com/burningTyger/openshift_moodle/blob/master/VERSION) file.
 
 ###Requirements
 In order to go through this manual you will need a couple of things first:

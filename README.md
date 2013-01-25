@@ -88,11 +88,27 @@ The other way is updating your Moodle submodule yourself:
     git checkout <commit_you_want>
     cd ..
     git commit -am 'updating moodle'
-    git push origin HEAD:master
+    git push your_os_repo HEAD:master
    
 But here's the same idea, you need to make sure you're upgrading correctly. Moodle breaks easily after an incorrect upgrade. If you're unsure make use of Openshift's snapshot utility:
 
     rhc snapshot save -a moodle
+
+####Known issues
+When updating there might be one or the other issue. I'll add some of them here:
+
+#####Too many redirects after an update
+This might be due to a missing config load. For some reason not all action hooks were loaded and Moodle is missing some important settings. Try this:
+
+    rhc app reload -a moodle
+    rhc app start -a moodle2
+
+#####No admin pages in Moodle after an update
+You have successfully pushed your update to your Openshift repository and updated the database via Moodle's update view but after that the admin pages stay blank. That seems to be a common problem and can be easily solved by running the cron page:
+
+    https://moodle-your-domain.rhcloud.com/admin/cron.php
+
+Obviously you have to replace the subdomain with yours :)
    
 _Good luck!_      
     

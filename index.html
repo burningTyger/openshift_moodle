@@ -30,115 +30,139 @@
       <section>
         <h1>Moodle for Openshift</h1>
 
-<p>Moodle is a well known learning management system (lms) used by many schools and organisations around the world. If you need a personal install or a platform for a small school this Openshift Quickstart might be the right thing for you. Openshift offers a 500MB instance for free which is more than enough if you just need something that works and you still have the options to scale your application if you have to. </p>
+        <p>Moodle is a well known learning management system (lms) used by many schools and organisations around the world. If you need a personal install or a platfor for a small school this Openshift Quickstart might be the right thing for you. Openshift offers a 500MB instance for free which is more than enough if you just need something that works and you still have the options to scale your application if you have to.</p>
 
-<p>If you're ready to start follow this manual. </p>
+        <p>If you're ready to start follow this manual.</p>
 
-<h2>Current Moodle Version</h2>
+        <h2>Current Moodle Version</h2>
 
-<p>To see which version of Moodle you're getting with master see the <a href="https://github.com/burningTyger/openshift_moodle/blob/master/VERSION">VERSION</a> file.</p>
+        <p>To see which version of Moodle you're getting with master see the VERSION file.</p>
 
-<h3>Requirements</h3>
+        <h3>Requirements</h3>
 
-<p>In order to go through this manual you will need a couple of things first:</p>
+        <p>In order to go through this manual you will need a couple of things first:</p>
 
-<ul>
-<li><a href="http://ruby-lang.org">Ruby (1.8.7 and up)</a></li>
-<li><a href="http://git-scm.com">Git</a></li>
-</ul><p>If you need help with this see the Openshift help pages: <a href="https://openshift.redhat.com/community/get-started">https://openshift.redhat.com/community/get-started</a></p>
+        <ul>
+        <li><a href="http://ruby-lang.org">Ruby (1.8.7 and up)</a></li>
+        <li><a href="http://git-scm.com">Git</a></li>
+        </ul>
 
-<h3>Getting ready</h3>
 
-<p>Make sure you have an account or create a new one at <a href="https://openshift.redhat.com/app/account/new">https://openshift.redhat.com/app/account/new</a></p>
+        <p>If you need help with this see the Openshift help pages: <a href="https://openshift.redhat.com/community/get-started">https://openshift.redhat.com/community/get-started</a></p>
 
-<p>Install the rhc gem:</p>
+        <h3>Getting ready</h3>
 
-<pre><code>gem install rhc
-</code></pre>
+        <p>Make sure you have an account or create a new one at <a href="https://openshift.redhat.com/app/account/new">https://openshift.redhat.com/app/account/new</a></p>
 
-<p>and set up your environment:</p>
+        <p>Install the rhc gem:</p>
 
-<pre><code>rhc setup
-</code></pre>
+        <pre><code>gem install rhc
+        </code></pre>
 
-<h2>Creating the app</h2>
+        <p>and set up your environment:</p>
 
-<p>To create the new app go to your console and use the rhc gem. In the following examples we're using <code>moodle</code> as our app name (you're free to pick any other name you like) and <code>me</code> as our username/domain.</p>
+        <pre><code>rhc setup
+        </code></pre>
 
-<pre><code>rhc app create moodle php-5.3
-</code></pre>
+        <h2>Creating the app</h2>
 
-<p>This will create a new app that will be available as <a href="https://moodle-me.rhcloud.com">https://moodle-me.rhcloud.com</a></p>
+        <p>To create the new app go to your console and use the rhc gem. In the following examples we're using <code>moodle</code> as our app name (you're free to pick any other name you like) and <code>me</code> as our username/domain.</p>
 
-<p>During the setup process rhc spits out a lot of information. You should copy them into a document so that you can chaeck their values at a later point, e.g. when looging in via SSH.</p>
+        <pre><code>rhc app create moodle php-5.3
+        </code></pre>
 
-<p>During the creation of your new app rhc also created a new directory called <code>moodle</code> which contains the repository of your app, i.e. it is a clone of your app.</p>
+        <p>This will create a new app that will be available as https://moodle-me.rhcloud.com</p>
 
-<p>Now that you have the app created you need to add some cartridges to it:</p>
+        <p>During the setup process rhc spits out a lot of information. You should copy them into a document so that you can chaeck their values at a later point, e.g. when looging in via SSH.</p>
 
-<pre><code>rhc cartridge add cron-1.4 -a moodle
-rhc cartridge add mysql-5.1 -a moodle
-rhc cartridge add phpmyadmin-3.4 -a moodle
-</code></pre>
+        <p>During the creation of your new app rhc also created a new directory called <code>moodle</code> which contains the repository of your app, i.e. it is a clone of your app.</p>
 
-<p>The last one is optional but quite useful if you need to edit your database manually and with a nice GUI.</p>
+        <p>Now that you have the app created you need to add some cartridges to it:</p>
 
-<p>The first cartridge lets you use cron which you will need for daily cron jobs like sending out notifications and cleaning up the database.</p>
+        <pre><code>rhc cartridge add cron-1.4 -a moodle
+        rhc cartridge add mysql-5.1 -a moodle
+        rhc cartridge add phpmyadmin-3.4 -a moodle
+        </code></pre>
 
-<p>The second cartridge is your database.</p>
+        <p>The last one is optional but quite useful if you need to edit your database manually and with a nice GUI.</p>
 
-<h3>Getting Moodle</h3>
+        <p>The first cartridge lets you use cron which you will need for daily cron jobs like sending out notifications and cleaning up the database.</p>
 
-<p>Now that you created your app with all the necessary cartridges you still need Moodle in your repository. </p>
+        <p>The second cartridge is your database.</p>
 
-<pre><code>cd moodle
-git remote add upstream -m master git@github.com:burningTyger/openshift_moodle.git
-git pull upstream master
-</code></pre>
+        <h3>Getting Moodle</h3>
 
-<p>These commands will add my openshift_moodle repository to your app and will then pull in everything from there to popuate your app repository with it.</p>
+        <p>Now that you created your app with all the necessary cartridges you still need Moodle in your repository.</p>
 
-<p>However, the <code>php</code> inside your repository which holds the Moodle submodule will be empty. Nothing to worry about. Since it is a submodule and you don't need to change anything inside that directory it will be fetched by Openshift during your next step.</p>
+        <pre><code>cd moodle
+        git remote add upstream -m master git@github.com:burningTyger/openshift_moodle.git
+        git pull upstream master
+        </code></pre>
 
-<p>After this you have everything ready to push your newly created Moodle app to Openshift:</p>
+        <p>These commands will add my openshift_moodle repository to your app and will then pull in everything from there to popuate your app repository with it.</p>
 
-<pre><code>git push origin HEAD:master
-</code></pre>
+        <p>However, the <code>php</code> inside your repository which holds the Moodle submodule will be empty. Nothing to worry about. Since it is a submodule and you don't need to change anything inside that directory it will be fetched by Openshift during your next step.</p>
 
-<p>It will take a while to upload the repository to Openshift and it takes quite some time to load the Moodle repository which is a submoduel inside your Openshift repository. Once this is done you can head over to your new Moodle site: <a href="https://moodle-me.rhcloud.com">https://moodle-me.rhcloud.com</a> (use your own domain here).</p>
+        <p>After this you have everything ready to push your newly created Moodle app to Openshift:</p>
 
-<p>You should now be able to install Moodle in your browser and set everything up according to your needs. </p>
+        <pre><code>git push origin HEAD:master
+        </code></pre>
 
-<p><em>You made it!</em></p>
+        <p>It will take a while to upload the repository to Openshift and it takes quite some time to load the Moodle repository which is a submoduel inside your Openshift repository. Once this is done you can head over to your new Moodle site: https://moodle-me.rhcloud.com (use your own domain here).</p>
 
-<h3>Updating Moodle</h3>
+        <p>You should now be able to install Moodle in your browser and set everything up according to your needs.</p>
 
-<p><strong>Note</strong> I'm thinking of using different branches for the different versions. For now you will have to use this howto:</p>
+        <p><em>You made it!</em></p>
 
-<p>Every once in a while you should update/upgrade your moodle install. Be careful though, Moodle has many versions in parallel and I'll try to stick to the latest stable version available. The problem here is you need to be on the latest old stable version in order to upgrade to the latest stable version. So before you in a few weeks upgrade to version 2.5 stable which is currently a dev branch you need to upgrade to the latest 2.4 version first and then switch branches in order to upgrade to 2.5 stable.</p>
+        <h3>Updating Moodle</h3>
 
-<p>There are two possible ways of updating your repository, one is following cloesely my updates on my repository and updating your repository accordingly:</p>
+        <p><strong>Note</strong> I'm thinking of using different branches for the different versions. For now you will have to use this howto:</p>
 
-<pre><code>git pull upstream master
-</code></pre>
+        <p>Every once in a while you should update/upgrade your moodle install. Be careful though, Moodle has many versions in parallel and I'll try to stick to the latest stable version available. The problem here is you need to be on the latest old stable version in order to upgrade to the latest stable version. So before you in a few weeks upgrade to version 2.5 stable which is currently a dev branch you need to upgrade to the latest 2.4 version first and then switch branches in order to upgrade to 2.5 stable.</p>
 
-<p>I will tag my updates so you can see if I switch branches to a newer version on Moodle. So usually I will tag my last commit of a branch like <code>last_23</code> which you need to pull first, upgrade Moodle by running the update script and then pulling the next commits.</p>
+        <p>There are two possible ways of updating your repository, one is following cloesely my updates on my repository and updating your repository accordingly:</p>
 
-<p>The other way is updating your Moodle submodule yourself:</p>
+        <pre><code>git pull upstream master
+        </code></pre>
 
-<pre><code>cd moodle/php
-git checkout &lt;commit_you_want&gt;
-cd ..
-git commit -am 'updating moodle'
-git push origin HEAD:master
-</code></pre>
+        <p>I will tag my updates so you can see if I switch branches to a newer version on Moodle. So usually I will tag my last commit of a branch like <code>last_23</code> which you need to pull first, upgrade Moodle by running the update script and then pulling the next commits.</p>
 
-<p>But here's the same idea, you need to make sure you're upgrading correctly. Moodle breaks easily after an incorrect upgrade. If you're unsure make use of Openshift's snapshot utility:</p>
+        <p>The other way is updating your Moodle submodule yourself:</p>
 
-<pre><code>rhc snapshot save -a moodle
-</code></pre>
+        <pre><code>cd moodle/php
+        git checkout &lt;commit_you_want&gt;
+        cd ..
+        git commit -am 'updating moodle'
+        git push your_os_repo HEAD:master
+        </code></pre>
 
-<p><em>Good luck!</em>      </p>
+        <p>But here's the same idea, you need to make sure you're upgrading correctly. Moodle breaks easily after an incorrect upgrade. If you're unsure make use of Openshift's snapshot utility:</p>
+
+        <pre><code>rhc snapshot save -a moodle
+        </code></pre>
+
+        <h4>Known issues</h4>
+
+        <p>When updating there might be one or the other issue. I'll add some of them here:</p>
+
+        <h5>Too many redirects after an update</h5>
+
+        <p>This might be due to a missing config load. For some reason not all action hooks were loaded and Moodle is missing some important settings. Try this:</p>
+
+        <pre><code>rhc app reload -a moodle
+        rhc app start -a moodle2
+        </code></pre>
+
+        <h5>No admin pages in Moodle after an update</h5>
+
+        <p>You have successfully pushed your update to your Openshift repository and updated the database via Moodle's update view but after that the admin pages stay blank. That seems to be a common problem and can be easily solved by running the cron page:</p>
+
+        <pre><code>https://moodle-your-domain.rhcloud.com/admin/cron.php
+        </code></pre>
+
+        <p>Obviously you have to replace the subdomain with yours :)</p>
+
+        <p><em>Good luck!</em></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>

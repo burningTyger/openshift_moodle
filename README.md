@@ -53,7 +53,7 @@ The second cartridge is your database.
 Now that you created your app with all the necessary cartridges you still need Moodle in your repository. 
 
     cd moodle
-    git remote add upstream -m master git@github.com:burningTyger/openshift_moodle.git
+    git remote add upstream -m master git://github.com/burningTyger/openshift_moodle.git 
     git pull upstream master
     
 These commands will add my openshift_moodle repository to your app and will then pull in everything from there to popuate your app repository with it.

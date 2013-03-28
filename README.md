@@ -33,9 +33,13 @@ To create the new app go to your console and use the rhc gem. In the following e
     
 This will create a new app that will be available as https://moodle-me.rhcloud.com
 
-During the setup process rhc spits out a lot of information. You should copy them into a document so that you can chaeck their values at a later point, e.g. when looging in via SSH.
+During the setup process rhc spits out a lot of information. You should copy them into a document so that you can check their values at a later point, e.g. when looging in via SSH.
 
-During the creation of your new app rhc also created a new directory called `moodle` which contains the repository of your app, i.e. it is a clone of your app.
+During the creation of your new app rhc also created a new directory called `moodle` which contains the repository of your app, i.e. it is a clone of your newly created openshift app which, at this point, is still empty.
+
+Since it will later also conflict with the Moodle repository, I recommend to just remove all directories inside the moodle dir and later recreate it:
+
+    rm -rf moodle        
 
 Now that you have the app created you need to add some cartridges to it:
 
@@ -50,21 +54,26 @@ The first cartridge lets you use cron which you will need for daily cron jobs li
 The second cartridge is your database.
 
 ###Getting Moodle
-Now that you created your app with all the necessary cartridges you still need Moodle in your repository. 
+Now that you created your app with all the necessary cartridges you need to get the Moodle repository. 
 
+    git clone --origin upstream git://github.com/burningTyger/openshift_moodle.git moodle 
     cd moodle
-    git remote add upstream -m master git://github.com/burningTyger/openshift_moodle.git 
-    git pull upstream master
     
-These commands will add my openshift_moodle repository to your app and will then pull in everything from there to popuate your app repository with it.
+Since you already removed the original repository you need to add your Openshift git repository again. To find out which url you have to use you can use your previous notes or find out again by typing:
 
-However, the `php` inside your repository which holds the Moodle submodule will be empty. Nothing to worry about. Since it is a submodule and you don't need to change anything inside that directory it will be fetched by Openshift during your next step.
+    rhc app show moodle
+    
+Under `Git URL:` you will find the address you need:
+
+    git remote add origin <the Openshift git url>
 
 After this you have everything ready to push your newly created Moodle app to Openshift:
 
-    git push origin HEAD:master
+    git push -f origin HEAD:master
     
-It will take a while to upload the repository to Openshift and it takes quite some time to load the Moodle repository which is a submoduel inside your Openshift repository. Once this is done you can head over to your new Moodle site: https://moodle-me.rhcloud.com (use your own domain here).
+You need the `-f` option because the new repository differs slightly from the original one created by Openshift. Further pushes should work without the `-f` option.    
+    
+It will take a while to upload the repository to Openshift and it takes quite some time to load the Moodle repository which is a submodule inside your Openshift repository. Once this is done you can head over to your new Moodle site: https://moodle-me.rhcloud.com (use your own domain here).
 
 You should now be able to install Moodle in your browser and set everything up according to your needs. 
 
@@ -110,5 +119,4 @@ You have successfully pushed your update to your Openshift repository and update
 
 Obviously you have to replace the subdomain with yours :)
    
-_Good luck!_      
-    
+_Good luck!_   

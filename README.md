@@ -45,7 +45,7 @@ Now that you have the app created you need to add some cartridges to it:
 
     rhc cartridge add cron-1.4 -a moodle
     rhc cartridge add mysql-5.1 -a moodle
-    rhc cartridge add phpmyadmin-3.4 -a moodle
+    rhc cartridge add phpmyadmin-4 -a moodle
     
 The last one is optional but quite useful if you need to edit your database manually and with a nice GUI.
 
@@ -110,7 +110,7 @@ When updating there might be one or the other issue. I'll add some of them here:
 This might be due to a missing config load. For some reason not all action hooks were loaded and Moodle is missing some important settings. Try this:
 
     rhc app reload -a moodle
-    rhc app start -a moodle2
+    rhc app start -a moodle
 
 #####No admin pages in Moodle after an update
 You have successfully pushed your update to your Openshift repository and updated the database via Moodle's update view but after that the admin pages stay blank. That seems to be a common problem and can be easily solved by running the cron page:
